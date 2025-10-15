@@ -1,0 +1,1 @@
+docker run -it -p 25565:25565 -e TYPE=PAPER -e VERSION=1.21.8 -e EULA=TRUE -v ./data:/data itzg/minecraft-server
