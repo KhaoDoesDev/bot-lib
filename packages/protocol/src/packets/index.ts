@@ -1,7 +1,7 @@
 import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundRegistryData, ClientboundSelectKnownPacks, ClientboundUpdateEnabledFeatures, ClientboundUpdateTags, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundSelectKnownPacks } from "./config";
 import { ServerboundIntention } from "./handshake";
 import { ClientboundLoginCompression, ClientboundLoginDisconnect, ClientboundLoginFinished, ServerboundHello, ServerboundLoginAcknowledged } from "./login";
-import { ClientboundChangeDifficulty, ClientboundLogin } from "./play";
+import { ClientboundChangeDifficulty, ClientboundEntityEvent, ClientboundKeepAlive, ClientboundLogin, ClientboundPlayerAbilities, ClientboundPlayerPosition, ClientboundRecipeBookSettings, ClientboundServerData, ClientboundSetExperience, ClientboundSetHeldItem, ClientboundSetSpawn, ClientboundSound, ClientboundUpdateRecipes, ServerboundKeepAlive } from "./play";
 
 export const serverboundPackets = [
   ServerboundIntention,
@@ -9,7 +9,8 @@ export const serverboundPackets = [
   ServerboundLoginAcknowledged,
   ServerboundClientInformation,
   ServerboundSelectKnownPacks,
-  ServerboundFinishConfiguration
+  ServerboundFinishConfiguration,
+  ServerboundKeepAlive
 ];
 
 export const clientboundPackets = [
@@ -23,7 +24,18 @@ export const clientboundPackets = [
   ClientboundCustomPayload,
   ClientboundUpdateTags,
   ClientboundLogin,
-  ClientboundChangeDifficulty
+  ClientboundChangeDifficulty,
+  ClientboundPlayerAbilities,
+  ClientboundSetHeldItem,
+  ClientboundUpdateRecipes,
+  ClientboundEntityEvent,
+  ClientboundRecipeBookSettings,
+  ClientboundPlayerPosition,
+  ClientboundServerData,
+  ClientboundSetSpawn,
+  ClientboundSetExperience,
+  ClientboundKeepAlive,
+  ClientboundSound
 ];
 
 export const packets = [...serverboundPackets, ...clientboundPackets];
