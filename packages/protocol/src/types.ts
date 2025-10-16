@@ -16,3 +16,17 @@ export enum States {
   CONFIG,
   PLAY
 }
+
+export enum GameModes {
+  SURVIVAL = 0,
+  CREATIVE = 1,
+  ADVENTURE = 2,
+  SPECTATOR = 3
+}
+
+export enum Difficulties {
+  PEACEFUL = 0,
+  EASY = 1,
+  NORMAL = 2,
+  HARD = 3
+}

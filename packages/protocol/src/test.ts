@@ -68,11 +68,8 @@ client.on("packet", async (packet) => {
   } else if (packet instanceof ClientboundFinishConfiguration) {
     client.writePacket(new ServerboundFinishConfiguration());
     client.state = States.PLAY;
-    process.exit();
-  } else if (packet instanceof ClientboundCustomPayload && packet.identifier === "minecraft:brand") {
-    console.log(packet.data.toString());
+    console.log("Reached Play State");
   }
-    
 });
 
 client.on("unhandledPacket", (id, payload) => {

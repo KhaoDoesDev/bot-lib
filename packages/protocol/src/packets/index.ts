@@ -1,6 +1,7 @@
 import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundRegistryData, ClientboundSelectKnownPacks, ClientboundUpdateEnabledFeatures, ClientboundUpdateTags, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundSelectKnownPacks } from "./config";
 import { ServerboundIntention } from "./handshake";
-import { ClientboundLoginCompression, ClientboundLoginFinished, ServerboundHello, ServerboundLoginAcknowledged } from "./login";
+import { ClientboundLoginCompression, ClientboundLoginDisconnect, ClientboundLoginFinished, ServerboundHello, ServerboundLoginAcknowledged } from "./login";
+import { ClientboundChangeDifficulty, ClientboundLogin } from "./play";
 
 export const serverboundPackets = [
   ServerboundIntention,
@@ -14,12 +15,15 @@ export const serverboundPackets = [
 export const clientboundPackets = [
   ClientboundLoginCompression,
   ClientboundLoginFinished,
+  ClientboundLoginDisconnect,
   ClientboundUpdateEnabledFeatures,
   ClientboundSelectKnownPacks,
   ClientboundRegistryData,
   ClientboundFinishConfiguration,
   ClientboundCustomPayload,
-  ClientboundUpdateTags
+  ClientboundUpdateTags,
+  ClientboundLogin,
+  ClientboundChangeDifficulty
 ];
 
 export const packets = [...serverboundPackets, ...clientboundPackets];
@@ -27,3 +31,4 @@ export const packets = [...serverboundPackets, ...clientboundPackets];
 export * from "./handshake";
 export * from "./login";
 export * from "./config";
+export * from "./play";
