@@ -23,7 +23,7 @@ export class ClientboundChangeDifficulty extends Packet {
   static override deserialize(buf: Buffer): ClientboundChangeDifficulty {
     return new ClientboundChangeDifficulty(
       readByte(buf, 0),
-      readBoolean(buf, 1).value
+      readBoolean(buf, 1)
     );
   }
 }

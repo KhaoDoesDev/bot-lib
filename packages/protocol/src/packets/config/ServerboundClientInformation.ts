@@ -72,14 +72,14 @@ export class ServerboundClientInformation extends Packet {
     const { value: chatMode, size: s3 } = readVarInt(buf, offset);
     offset += s3;
 
-    const { value: chatColors } = readBoolean(buf, offset++); 
+    const chatColors = readBoolean(buf, offset++); 
     const displayedSkinParts = readByte(buf, offset++);
 
     const { value: mainHand, size: s6 } = readVarInt(buf, offset);
     offset += s6;
 
-    const { value: enableTextFiltering } = readBoolean(buf, offset++);
-    const { value: allowServerListing } = readBoolean(buf, offset++);
+    const enableTextFiltering = readBoolean(buf, offset++);
+    const allowServerListing = readBoolean(buf, offset++);
     const { value: particleStatus } = readVarInt(buf, offset);
 
     return new ServerboundClientInformation(

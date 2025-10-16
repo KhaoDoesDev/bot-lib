@@ -34,14 +34,14 @@ export class ClientboundRecipeBookSettings extends Packet {
 
   static override deserialize(buf: Buffer): ClientboundRecipeBookSettings {
     return new ClientboundRecipeBookSettings(
-      readBoolean(buf, 0).value,
-      readBoolean(buf, 1).value,
-      readBoolean(buf, 2).value,
-      readBoolean(buf, 3).value,
-      readBoolean(buf, 4).value,
-      readBoolean(buf, 5).value,
-      readBoolean(buf, 6).value,
-      readBoolean(buf, 7).value
+      readBoolean(buf, 0),
+      readBoolean(buf, 1),
+      readBoolean(buf, 2),
+      readBoolean(buf, 3),
+      readBoolean(buf, 4),
+      readBoolean(buf, 5),
+      readBoolean(buf, 6),
+      readBoolean(buf, 7)
     );
   }
 }

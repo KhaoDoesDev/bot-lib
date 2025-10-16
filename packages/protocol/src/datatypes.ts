@@ -46,8 +46,8 @@ export function writeString(str: string): Buffer {
 export function readBoolean(
   buf: Buffer,
   offset = 0
-): { value: boolean; size: number } {
-  return { value: buf[offset] !== 0, size: 1 };
+): boolean {
+  return buf[offset] !== 0;
 }
 
 export function writeBoolean(val: boolean): Buffer {

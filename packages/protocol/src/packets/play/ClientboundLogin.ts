@@ -86,7 +86,7 @@ export class ClientboundLogin extends Packet {
 
     const entityId = readInt(buf, offset);
     offset += 4;
-    const { value: isHardcore } = readBoolean(buf, offset++);
+    const isHardcore = readBoolean(buf, offset++);
     const diamensionNamesCount = readInt(buf, offset);
     offset += 4;
 
@@ -105,9 +105,9 @@ export class ClientboundLogin extends Packet {
     offset += s5;
     const { value: simulationDistance, size: s6 } = readVarInt(buf, offset);
     offset += s6;
-    const { value: reducedDebugInfo } = readBoolean(buf, offset++);
-    const { value: enableRespawnScreen } = readBoolean(buf, offset++);
-    const { value: doLimitedCrafting } = readBoolean(buf, offset++);
+    const reducedDebugInfo = readBoolean(buf, offset++);
+    const enableRespawnScreen = readBoolean(buf, offset++);
+    const doLimitedCrafting = readBoolean(buf, offset++);
     const { value: dimensionType, size: s7 } = readVarInt(buf, offset);
     offset += s7;
     const { value: dimensionName, size: s8 } = readString(buf, offset);
@@ -115,9 +115,9 @@ export class ClientboundLogin extends Packet {
     const hashedSeed = readLong(buf, offset++);
     const gameMode = readByte(buf, offset++);
     const previousGameMode = readByte(buf, offset++);
-    const { value: isDebug } = readBoolean(buf, offset++);
-    const { value: isFlat } = readBoolean(buf, offset++);
-    const { value: hasDeathLocation } = readBoolean(buf, offset++);
+    const isDebug = readBoolean(buf, offset++);
+    const isFlat = readBoolean(buf, offset++);
+    const hasDeathLocation = readBoolean(buf, offset++);
 
     let deathDimensionName: string | null = null;
     let deathLocation: number[] | null = null;
@@ -142,7 +142,7 @@ export class ClientboundLogin extends Packet {
     offset += s14;
     const { value: seaLevel, size: s15 } = readVarInt(buf, offset);
     offset += s15;
-    const { value: enforcesSecureChat } = readBoolean(buf, offset++);
+    const enforcesSecureChat = readBoolean(buf, offset++);
 
     return new ClientboundLogin(
       entityId,
