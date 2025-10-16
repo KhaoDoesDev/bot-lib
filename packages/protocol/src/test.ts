@@ -1,7 +1,5 @@
-import { Socket } from "net";
 import { Client } from "./client";
-import { ClientboundLoginCompression, ClientboundLoginFinished, ServerboundClientInformation, ServerboundHello, ServerboundIntention, ServerboundLoginAcknowledged } from "./packets";
-import { readVarInt } from "./datatypes";
+import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundLoginCompression, ClientboundLoginFinished, ClientboundSelectKnownPacks, ClientboundUpdateEnabledFeatures, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundHello, ServerboundIntention, ServerboundLoginAcknowledged, ServerboundSelectKnownPacks } from "./packets";
 import { States } from "./types";
 
 const HOST = "localhost";
@@ -65,7 +63,16 @@ client.on("packet", async (packet) => {
   } else if (packet instanceof ClientboundLoginCompression) {
     client.compressionThreshold = packet.threshold; 
     console.log(`Compression threshold set to ${packet.threshold}`);
+  } else if (packet instanceof ClientboundSelectKnownPacks) {
+    client.writePacket(new ServerboundSelectKnownPacks([]));
+  } else if (packet instanceof ClientboundFinishConfiguration) {
+    client.writePacket(new ServerboundFinishConfiguration());
+    client.state = States.PLAY;
+    process.exit();
+  } else if (packet instanceof ClientboundCustomPayload && packet.identifier === "minecraft:brand") {
+    console.log(packet.data.toString());
   }
+    
 });
 
 client.on("unhandledPacket", (id, payload) => {
