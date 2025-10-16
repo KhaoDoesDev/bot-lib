@@ -13,3 +13,5 @@ export * from "./ClientboundSetSpawn";
 export * from "./ClientboundSetExperience";
 export * from "./ClientboundKeepAlive";
 export * from "./ClientboundSound";
+export * from "./ClientboundSetChunkCacheRadius";
+export * from "./ClientboundSetSimulationDistance";
