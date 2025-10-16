@@ -84,9 +84,11 @@ export class ClientboundLogin extends Packet {
   static override deserialize(buf: Buffer): ClientboundLogin {
     let offset = 0;
 
-    const entityId = readInt(buf, offset++);
+    const entityId = readInt(buf, offset);
+    offset += 4;
     const { value: isHardcore } = readBoolean(buf, offset++);
-    const diamensionNamesCount = readInt(buf, offset++);
+    const diamensionNamesCount = readInt(buf, offset);
+    offset += 4;
 
     const diamensionNames: string[] = Array.from(
       { length: diamensionNamesCount },
@@ -127,10 +129,13 @@ export class ClientboundLogin extends Packet {
       );
       offset += s12;
       deathDimensionName = deathDimensionNameStr;
-      const deathLocationCount = readInt(buf, offset++);
-      deathLocation = Array.from({ length: deathLocationCount }, () =>
-        readInt(buf, offset++)
-      );
+      const deathLocationCount = readInt(buf, offset);
+      offset += 4;
+      deathLocation = Array.from({ length: deathLocationCount }, () => {
+        const loc = readInt(buf, offset);
+        offset += 4;
+        return loc;
+      });
     }
 
     const { value: portalCooldown, size: s14 } = readVarInt(buf, offset);
