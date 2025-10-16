@@ -1,4 +1,4 @@
-import { ClientboundUpdateEnabledFeatures, ServerboundClientInformation } from "./config";
+import { ClientboundSelectKnownPacks, ClientboundUpdateEnabledFeatures, ServerboundClientInformation } from "./config";
 import { ServerboundIntention } from "./handshake";
 import { ClientboundLoginCompression, ClientboundLoginFinished, ServerboundHello, ServerboundLoginAcknowledged } from "./login";
 
@@ -12,7 +12,8 @@ export const serverboundPackets = [
 export const clientboundPackets = [
   ClientboundLoginCompression,
   ClientboundLoginFinished,
-  ClientboundUpdateEnabledFeatures
+  ClientboundUpdateEnabledFeatures,
+  ClientboundSelectKnownPacks
 ];
 
 export const packets = [...serverboundPackets, ...clientboundPackets];
