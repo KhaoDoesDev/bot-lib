@@ -1,22 +1,22 @@
 import { States } from "../../types";
 import { Packet } from "../Packet";
-import { readFloat, writeFloat } from "../../datatypes";
+import { readLong, writeLong } from "../../datatypes";
 
 export class ServerboundKeepAlive extends Packet {
   static override id = 0x1B;
   static override state = States.PLAY;
 
-  constructor(public id: number) {
+  constructor(public id: bigint) {
     super();
   }
 
   serialize(): Buffer {
-    return writeFloat(this.id);
+    return writeLong(this.id);
   }
 
   static override deserialize(buf: Buffer): ServerboundKeepAlive {
     return new ServerboundKeepAlive(
-      readFloat(buf, 0)
+      readLong(buf, 0)
     );
   }
 }
