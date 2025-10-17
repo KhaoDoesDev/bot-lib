@@ -4,13 +4,24 @@ import { readVarInt, writeVarInt } from "./datatypes";
 import { Packet } from "./packets/Packet";
 import * as zlib from "zlib";
 import { clientboundPackets } from "./packets";
-import { States } from "./types";
+import { States, type Events } from "./types";
 
 export class Client extends EventEmitter {
   private buffer: Buffer = Buffer.alloc(0);
   public compressionThreshold: number = 0;
   public state: States = States.HANDSHAKE;
   public socket: Socket;
+
+  override on<K extends keyof Events>(event: K, listener: Events[K]): this {
+    return super.on(event, listener);
+  }
+
+  override emit<K extends keyof Events>(
+    event: K,
+    ...args: Parameters<Events[K]>
+  ): boolean {
+    return super.emit(event, ...args);
+  }
 
   constructor(public host: string, public port: number) {
     super();
@@ -87,7 +98,7 @@ export class Client extends EventEmitter {
         const packet = PacketClass.deserialize(payload);
         this.emit("packet", packet);
       } catch (err) {
-        this.emit("packetError", err, packetId);
+        this.emit("packetError", packetId, err);
       }
     }
   }
