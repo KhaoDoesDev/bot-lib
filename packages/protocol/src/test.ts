@@ -33,6 +33,7 @@ client.socket.on("connect", async () => {
 });
 
 client.on("packet", async (packet) => {
+  // console.log(packet);
   if (packet instanceof ClientboundLoginFinished) {
     console.log("Login successful!");
     await client.writePacket(new ServerboundLoginAcknowledged());
@@ -75,5 +76,5 @@ client.on("packet", async (packet) => {
 
 client.on("unhandledPacket", (id, payload) => {
   console.log(`Unhandled packet ID: 0x${id.toString(16)}`);
-  console.log(payload);
+  // console.log(payload);
 });

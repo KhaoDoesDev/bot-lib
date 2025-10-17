@@ -15,3 +15,8 @@ export * from "./ClientboundKeepAlive";
 export * from "./ClientboundSound";
 export * from "./ClientboundSetChunkCacheRadius";
 export * from "./ClientboundSetSimulationDistance";
+export * from "./ClientboundMoveEntityPosRot";
+export * from "./ClientboundRotateHead";
+export * from "./ClientboundMoveEntityPos";
+export * from "./ClientboundSetEntityMotion";
+export * from "./ClientboundEntityPositionSync";
