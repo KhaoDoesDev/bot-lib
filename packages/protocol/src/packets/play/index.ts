@@ -20,3 +20,4 @@ export * from "./ClientboundRotateHead";
 export * from "./ClientboundMoveEntityPos";
 export * from "./ClientboundSetEntityMotion";
 export * from "./ClientboundEntityPositionSync";
+export * from "./ClientboundSystemChat";

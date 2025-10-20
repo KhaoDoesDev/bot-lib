@@ -1,5 +1,5 @@
 import { Client } from "./client";
-import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundKeepAlive, ClientboundLoginCompression, ClientboundLoginFinished, ClientboundSelectKnownPacks, ClientboundUpdateEnabledFeatures, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundHello, ServerboundIntention, ServerboundKeepAlive, ServerboundLoginAcknowledged, ServerboundSelectKnownPacks } from "./packets";
+import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundKeepAlive, ClientboundLoginCompression, ClientboundLoginFinished, ClientboundSelectKnownPacks, ClientboundSystemChat, ClientboundUpdateEnabledFeatures, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundHello, ServerboundIntention, ServerboundKeepAlive, ServerboundLoginAcknowledged, ServerboundSelectKnownPacks } from "./packets";
 import { States } from "./types";
 
 const HOST = "localhost";
@@ -75,6 +75,10 @@ client.on("packet", async (packet) => {
 });
 
 client.on("unhandledPacket", (id, payload) => {
-  console.log(`Unhandled packet ID: 0x${id.toString(16)}`);
+  // console.log(`Unhandled packet ID: 0x${id.toString(16)}`);
   // console.log(payload);
+});
+
+client.on("packetError", (id, err) => {
+  console.error(id, err);
 });
