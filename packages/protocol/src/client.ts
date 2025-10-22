@@ -95,7 +95,7 @@ export class Client extends EventEmitter {
       }
 
       try {
-        const packet = PacketClass.deserialize(payload);
+        const packet = await PacketClass.deserialize(payload);
         this.emit("packet", packet);
       } catch (err) {
         this.emit("packetError", packetId, err);
