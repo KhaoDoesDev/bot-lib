@@ -31,7 +31,7 @@ export class Client extends EventEmitter {
   }
 
   async writePacket(packet: Packet) {
-    const payload = packet.serialize();
+    const payload = await packet.serialize();
     const idBuf = writeVarInt((packet.constructor as any).id);
     let full = Buffer.concat([idBuf, payload]);
 
