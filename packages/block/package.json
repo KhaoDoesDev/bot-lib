@@ -1,0 +1,16 @@
+{
+  "name": "block",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "minecraft-data": "^3.99.1",
+    "registry": "workspace:*"
+  }
+}
