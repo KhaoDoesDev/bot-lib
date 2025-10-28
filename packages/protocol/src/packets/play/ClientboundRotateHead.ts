@@ -1,8 +1,10 @@
 import { States } from "../../types";
 import { Packet } from "../Packet";
 import {
+  readByte,
   readFloat,
   readVarInt,
+  writeByte,
   writeFloat,
   writeVarInt,
 } from "../../datatypes";
@@ -18,7 +20,7 @@ export class ClientboundRotateHead extends Packet {
   serialize(): Buffer {
     return Buffer.concat([
       writeVarInt(this.entityId),
-      writeFloat(this.headYaw),
+      writeByte(this.headYaw),
     ]);
   }
 
@@ -27,7 +29,7 @@ export class ClientboundRotateHead extends Packet {
 
     let { value: entityId, size: entityIdSize } = readVarInt(buf, offset);
     offset += entityIdSize;
-    let headYaw = readFloat(buf, offset);
+    let headYaw = readByte(buf, offset);
     return new ClientboundRotateHead(entityId, headYaw);
   }
 }
