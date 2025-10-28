@@ -112,7 +112,8 @@ export class ClientboundLogin extends Packet {
     offset += s7;
     const { value: dimensionName, size: s8 } = readString(buf, offset);
     offset += s8;
-    const hashedSeed = readLong(buf, offset++);
+    const hashedSeed = readLong(buf, offset);
+    offset += 8;
     const gameMode = readByte(buf, offset++);
     const previousGameMode = readByte(buf, offset++);
     const isDebug = readBoolean(buf, offset++);
