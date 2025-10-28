@@ -1,78 +1,73 @@
 import { Packet } from "../Packet";
 import { States } from "../../types";
-import {
-  readString,
-  readVarInt,
-  writeString,
-  writeVarInt,
-} from "../../datatypes";
-import { encode, decode, type Tag } from "nbt-ts";
+import { readBoolean, readNbt, readString, readVarInt, writeBoolean, writeString, writeVarInt } from "../../datatypes";
+import { type DecodeResult, type Tag } from "nbt-ts";
 
-export type RegistryEntry = {
+export interface NbtData {
+  name: string | null;
+  value: Tag | null;
+}
+
+export interface RegistryEntry { 
   id: string;
-  data?: Tag | null;
+  data?: Buffer | NbtData | null
 };
 
 export class ClientboundRegistryData extends Packet {
   static override id = 0x07;
   static override state = States.CONFIG;
 
-  constructor(
-    public registryId: string,
-    public entries: RegistryEntry[] = []
-  ) {
+  constructor(public registryId: string, public entries: RegistryEntry[] = []) {
     super();
   }
 
-  serialize(): Buffer {
-    const buffers: Buffer[] = [];
-
-    buffers.push(writeString(this.registryId));
-
-    buffers.push(writeVarInt(this.entries.length));
-
-    for (const entry of this.entries) {
-      buffers.push(writeString(entry.id));
-
-      if (entry.data) {
-        const nbtBuffer = encode(null, entry.data);
-        buffers.push(Buffer.from([1]));
-        buffers.push(nbtBuffer);
+  async serialize(): Promise<Buffer> {
+    const entries = await Promise.all(this.entries.map(async entry => {
+      const idBuf = writeString(entry.id);
+      if (entry.data instanceof Buffer) {
+        return Buffer.concat([idBuf, writeBoolean(true), entry.data as Buffer]);
       } else {
-        buffers.push(Buffer.from([0]));
+        return Buffer.concat([idBuf, writeBoolean(false)]);
       }
-    }
-
-    return Buffer.concat(buffers);
+    }));
+    return Buffer.concat([
+      writeString(this.registryId),
+      writeVarInt(this.entries.length),
+      ...entries
+    ]);
   }
 
-  static override deserialize(buf: Buffer): ClientboundRegistryData {
+  static override async deserialize(buf: Buffer): Promise<ClientboundRegistryData> {
     let offset = 0;
 
-    const { value: registryId, size: registryIdSize } = readString(buf, offset);
+    const { value: registryId, size: registryIdSize } = readString(buf, offset); // identifier
     offset += registryIdSize;
 
-    const { value: len, size: lenSize } = readVarInt(buf, offset);
+    const { value: len, size: lenSize } = readVarInt(buf, offset); // length of prefixed array
     offset += lenSize;
 
     const entries: RegistryEntry[] = [];
 
     for (let i = 0; i < len; i++) {
-      const { value: idStr, size: idStrSize } = readString(buf, offset);
+      const { value: idStr, size: idStrSize } = readString(buf, offset); // identifier
       offset += idStrSize;
 
-      const hasNbt = buf.readUInt8(offset++);
-      let nbtData: Tag | null = null;
+      const hasNbt = readBoolean(buf, offset); // boolean of prefixed optional
+      offset += 1;
+
+      let nbtData: DecodeResult | null = null;
 
       if (hasNbt) {
-        const decoded = decode(buf.subarray(offset));
-        nbtData = decoded.value;
-        offset += decoded.length;
+        const decodedNbt = await readNbt(buf.subarray(offset), { unnamed: true });
+        offset += decodedNbt?.length ?? 0;
       }
 
       entries.push({ id: idStr, data: nbtData });
     }
 
-    return new ClientboundRegistryData(registryId, entries);
+    
+    const result = new ClientboundRegistryData(registryId, entries);
+    console.log(result);
+    return result;
   }
 }

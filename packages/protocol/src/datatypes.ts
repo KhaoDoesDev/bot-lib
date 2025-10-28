@@ -1,4 +1,6 @@
 import { Buffer } from "buffer";
+import { decode, type DecodeOptions, type DecodeResult } from "nbt-ts";
+import { NBTData, read } from "nbtify";
 
 export function readVarInt(
   buf: Buffer,
@@ -117,4 +119,22 @@ export function writeDouble(val: number): Buffer {
   const buf = Buffer.alloc(8);
   buf.writeDoubleBE(val, 0);
   return buf;
+}
+
+export async function readNbt(buffer: Buffer, option?: DecodeOptions): Promise<DecodeResult | null> {
+  let sliceSize = 1;
+
+  while (sliceSize <= buffer.length) {
+    const slice = buffer.subarray(0, sliceSize);
+
+    try {
+      const nbt = await decode(slice, option);
+      return nbt;
+    } catch (err: any) {
+      sliceSize += 1;
+      continue;
+    }
+  }
+
+  return null;
 }

@@ -12,6 +12,9 @@
   "dependencies": {
     "auth": "workspace:*",
     "chat": "workspace:*",
-    "nbt-ts": "^1.3.6"
+    "deepslate": "^0.24.0",
+    "nbt-ts": "^1.3.6",
+    "nbtify": "^2.2.0",
+    "prismarine-nbt": "^2.7.0"
   }
 }

@@ -1,5 +1,5 @@
 import { Client } from "./client";
-import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundKeepAlive, ClientboundLoginCompression, ClientboundLoginFinished, ClientboundSelectKnownPacks, ClientboundSystemChat, ClientboundUpdateEnabledFeatures, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundHello, ServerboundIntention, ServerboundKeepAlive, ServerboundLoginAcknowledged, ServerboundSelectKnownPacks } from "./packets";
+import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundKeepAlive, ClientboundLoginCompression, ClientboundLoginFinished, ClientboundRotateHead, ClientboundSelectKnownPacks, ClientboundSystemChat, ClientboundUpdateEnabledFeatures, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundHello, ServerboundIntention, ServerboundKeepAlive, ServerboundLoginAcknowledged, ServerboundSelectKnownPacks } from "./packets";
 import { States } from "./types";
 
 const HOST = "localhost";
@@ -34,6 +34,7 @@ client.socket.on("connect", async () => {
 
 client.on("packet", async (packet) => {
   // console.log(packet);
+
   if (packet instanceof ClientboundLoginFinished) {
     console.log("Login successful!");
     await client.writePacket(new ServerboundLoginAcknowledged());
