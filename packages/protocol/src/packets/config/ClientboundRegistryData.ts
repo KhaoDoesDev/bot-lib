@@ -58,8 +58,8 @@ export class ClientboundRegistryData extends Packet {
       let nbtData: DecodeResult | null = null;
 
       if (hasNbt) {
-        const decodedNbt = await readNbt(buf.subarray(offset), { unnamed: true });
-        offset += decodedNbt?.length ?? 0;
+        nbtData = await readNbt(buf.subarray(offset), { unnamed: true });
+        offset += nbtData?.length ?? 0;
       }
 
       entries.push({ id: idStr, data: nbtData });

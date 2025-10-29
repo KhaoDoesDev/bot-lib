@@ -2,7 +2,7 @@ import { encode } from "nbt-ts";
 import { ClientboundRegistryData } from "./packets";
 const packet = new ClientboundRegistryData("example:registry", [{
   id: "example:registry2",
-  data: encode("name", { a: "a" })
+  data: encode(null, { a: "a" })
 }]);
 console.log("Original Packet:", packet);
 
