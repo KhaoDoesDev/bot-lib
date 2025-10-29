@@ -15,8 +15,6 @@ export class ClientboundKeepAlive extends Packet {
   }
 
   static override deserialize(buf: Buffer): ClientboundKeepAlive {
-    return new ClientboundKeepAlive(
-      readLong(buf, 0)
-    );
+    return new ClientboundKeepAlive(readLong(buf, 0));
   }
 }

@@ -1,9 +1,9 @@
 import { Client } from "./client";
-import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundKeepAlive, ClientboundLoginCompression, ClientboundLoginFinished, ClientboundRotateHead, ClientboundSelectKnownPacks, ClientboundSystemChat, ClientboundUpdateEnabledFeatures, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundHello, ServerboundIntention, ServerboundKeepAlive, ServerboundLoginAcknowledged, ServerboundSelectKnownPacks } from "./packets";
+import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundKeepAlive, ClientboundLoginCompression, ClientboundLoginFinished, ClientboundRotateHead, ClientboundSelectKnownPacks, ClientboundServerData, ClientboundSystemChat, ClientboundUpdateEnabledFeatures, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundHello, ServerboundIntention, ServerboundKeepAlive, ServerboundLoginAcknowledged, ServerboundSelectKnownPacks } from "./packets";
 import { States } from "./types";
 
 const HOST = "localhost";
-const PORT = 25565;
+const PORT = 25555;
 
 const client = new Client(HOST, PORT);
 
@@ -33,7 +33,10 @@ client.socket.on("connect", async () => {
 });
 
 client.on("packet", async (packet) => {
-  // console.log(packet);
+  
+  if (packet instanceof ClientboundServerData) {
+    console.log(packet);
+  }
 
   if (packet instanceof ClientboundLoginFinished) {
     console.log("Login successful!");

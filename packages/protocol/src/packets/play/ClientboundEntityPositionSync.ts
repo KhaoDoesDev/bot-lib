@@ -67,6 +67,7 @@ export class ClientboundEntityPositionSync extends Packet {
     let pitch = readFloat(buf, offset);
     offset += 4;
     let onGround = readBoolean(buf, offset);
+    offset += 1;
 
     return new ClientboundEntityPositionSync(
       entityId,

@@ -1,4 +1,9 @@
-import { bitfieldToTeleportFlags, States, TeleportFlags, type TeleportFlagsType } from "../../types";
+import {
+  bitfieldToTeleportFlags,
+  States,
+  TeleportFlags,
+  type TeleportFlagsType,
+} from "../../types";
 import { Packet } from "../Packet";
 import {
   readDouble,
@@ -56,8 +61,11 @@ export class ClientboundPlayerPosition extends Packet {
   static override deserialize(buf: Buffer): ClientboundPlayerPosition {
     let offset = 0;
 
-    const { value: teleportId, size: teleportIdSize } = readVarInt(buf, offset);
-    offset += teleportIdSize;
+    const { value: teleportId, size: teleportIdBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += teleportIdBufSize;
 
     const x = readDouble(buf, offset);
     offset += 8;
@@ -76,6 +84,7 @@ export class ClientboundPlayerPosition extends Packet {
     const pitch = readFloat(buf, offset);
     offset += 4;
     const flags = readInt(buf, offset);
+    offset += 4;
 
     return new ClientboundPlayerPosition(
       teleportId,

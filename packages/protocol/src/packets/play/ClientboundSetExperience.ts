@@ -14,7 +14,7 @@ export class ClientboundSetExperience extends Packet {
   constructor(
     public experienceBar: number,
     public level: number,
-    public experience: number,
+    public experience: number
   ) {
     super();
   }
@@ -32,10 +32,13 @@ export class ClientboundSetExperience extends Packet {
 
     const experienceBar = readFloat(buf, offset);
     offset += 4;
-    const { value: level, size: s1 } = readVarInt(buf, offset);
-    offset += s1;
-    const { value: experience, size: s2 } = readVarInt(buf, offset);
-    offset += s2;
+    const { value: level, size: levelBufSize } = readVarInt(buf, offset);
+    offset += levelBufSize;
+    const { value: experience, size: experienceBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += experienceBufSize;
     return new ClientboundSetExperience(experienceBar, level, experience);
   }
 }

@@ -1,5 +1,10 @@
 import { Packet } from "../Packet";
-import { readVarInt, writeVarInt, readString, writeString } from "../../datatypes";
+import {
+  readVarInt,
+  writeVarInt,
+  readString,
+  writeString,
+} from "../../datatypes";
 import { States } from "../../types";
 
 export type PropertySet = {
@@ -55,20 +60,24 @@ export class ClientboundUpdateRecipes extends Packet {
     let offset = 0;
 
     const propertySets: PropertySet[] = [];
-    const { value: propertySetCount, size: psSize } = readVarInt(buf, offset);
-    offset += psSize;
+    const { value: propertySetCount, size: propertySetCountBufSize } =
+      readVarInt(buf, offset);
+    offset += propertySetCountBufSize;
 
     for (let i = 0; i < propertySetCount; i++) {
-      const { value: id, size: idSize } = readString(buf, offset);
-      offset += idSize;
+      const { value: id, size: idBufSize } = readString(buf, offset);
+      offset += idBufSize;
 
-      const { value: itemCount, size: itemCountSize } = readVarInt(buf, offset);
-      offset += itemCountSize;
+      const { value: itemCount, size: itemCountBufSize } = readVarInt(
+        buf,
+        offset
+      );
+      offset += itemCountBufSize;
 
       const items: number[] = [];
       for (let j = 0; j < itemCount; j++) {
-        const { value: itemId, size: itemSize } = readVarInt(buf, offset);
-        offset += itemSize;
+        const { value: itemId, size: itemBufSize } = readVarInt(buf, offset);
+        offset += itemBufSize;
         items.push(itemId);
       }
 
@@ -76,27 +85,37 @@ export class ClientboundUpdateRecipes extends Packet {
     }
 
     const stonecutterRecipes: StonecutterRecipe[] = [];
-    const { value: stoneCount, size: stoneSize } = readVarInt(buf, offset);
-    offset += stoneSize;
+    const { value: stonecutterCount, size: stonecutterBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += stonecutterBufSize;
 
-    for (let i = 0; i < stoneCount; i++) {
-      const { value: ingCount, size: ingCountSize } = readVarInt(buf, offset);
-      offset += ingCountSize;
+    for (let i = 0; i < stonecutterCount; i++) {
+      const { value: ingredientsCount, size: ingredientsCountBufSize } =
+        readVarInt(buf, offset);
+      offset += ingredientsCountBufSize;
 
       const ingredients: number[] = [];
-      for (let j = 0; j < ingCount; j++) {
-        const { value: ingId, size: ingSize } = readVarInt(buf, offset);
-        offset += ingSize;
-        ingredients.push(ingId);
+      for (let j = 0; j < ingredientsCount; j++) {
+        const { value: ingredientsId, size: ingredientsBufSize } = readVarInt(
+          buf,
+          offset
+        );
+        offset += ingredientsBufSize;
+        ingredients.push(ingredientsId);
       }
 
-      const { value: slotCount, size: slotCountSize } = readVarInt(buf, offset);
-      offset += slotCountSize;
+      const { value: slotCount, size: slotCountBufSize } = readVarInt(
+        buf,
+        offset
+      );
+      offset += slotCountBufSize;
 
       const slotDisplay: number[] = [];
       for (let j = 0; j < slotCount; j++) {
-        const { value: slotId, size: slotSize } = readVarInt(buf, offset);
-        offset += slotSize;
+        const { value: slotId, size: slotBufSize } = readVarInt(buf, offset);
+        offset += slotBufSize;
         slotDisplay.push(slotId);
       }
 

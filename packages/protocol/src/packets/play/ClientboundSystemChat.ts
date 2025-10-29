@@ -37,8 +37,6 @@ export class ClientboundSystemChat extends Packet {
       if (!content.name && !content.value) break;
       contentArray.push(content);
     }
-    console.log(JSON.stringify(contentArray, null, 2));
-    console.log(buf.subarray(1, buf.length - 1).toString("utf-8"));
     const content: Record<string, any> = {};
     for (const c of contentArray) {
       content[c.name!] = c.value;
@@ -53,9 +51,6 @@ export class ClientboundSystemChat extends Packet {
             .trim()
     );
 
-    return new ClientboundSystemChat(
-      chatMessage,
-      readBoolean(buf, offset)
-    );
+    return new ClientboundSystemChat(chatMessage, readBoolean(buf, offset));
   }
 }

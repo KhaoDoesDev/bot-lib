@@ -1,12 +1,23 @@
 import { States } from "../../types";
 import { Packet } from "../Packet";
-import { readBoolean, readLong, readVarInt, writeBoolean, writeLong, writeVarInt } from "../../datatypes";
+import {
+  readBoolean,
+  readLong,
+  readVarInt,
+  writeBoolean,
+  writeLong,
+  writeVarInt,
+} from "../../datatypes";
 
 export class ClientboundSetTime extends Packet {
   static override id = 0x6a;
   static override state = States.PLAY;
 
-  constructor(public worldAge: bigint, public timeOfDay: number, public timeOfDayIncreasing: boolean) {
+  constructor(
+    public worldAge: bigint,
+    public timeOfDay: number,
+    public timeOfDayIncreasing: boolean
+  ) {
     super();
   }
 
@@ -14,7 +25,7 @@ export class ClientboundSetTime extends Packet {
     return Buffer.concat([
       writeLong(this.worldAge),
       writeVarInt(this.timeOfDay),
-      writeBoolean(this.timeOfDayIncreasing)
+      writeBoolean(this.timeOfDayIncreasing),
     ]);
   }
 
@@ -22,14 +33,13 @@ export class ClientboundSetTime extends Packet {
     let offset = 0;
     const worldAge = readLong(buf, offset);
     offset += 8;
-    const { value: timeOfDay, size: timeOfDaySize } = readVarInt(buf, offset);
-    offset += timeOfDaySize;
-    const timeOfDayIncreasing = readBoolean(buf, offset);
-    
-    return new ClientboundSetTime(
-      worldAge,
-      timeOfDay,
-      timeOfDayIncreasing
+    const { value: timeOfDay, size: timeOfDayBufSize } = readVarInt(
+      buf,
+      offset
     );
+    offset += timeOfDayBufSize;
+    const timeOfDayIncreasing = readBoolean(buf, offset);
+
+    return new ClientboundSetTime(worldAge, timeOfDay, timeOfDayIncreasing);
   }
 }

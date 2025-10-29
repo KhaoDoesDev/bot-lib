@@ -36,14 +36,14 @@ export class ServerboundSelectKnownPacks extends Packet {
     const knownPacks: KnownPack[] = [];
 
     for (let i = 0; i < length; i++) {
-      const { value: namespaceStr, size: namespaceStrLength } = readString(buf, offset); 
-      offset += namespaceStrLength;
+      const { value: namespaceStr, size: namespaceStrBufSize } = readString(buf, offset); 
+      offset += namespaceStrBufSize;
 
-      const { value: idStr, size: idStrLength } = readString(buf, offset);
-      offset += idStrLength;
+      const { value: idStr, size: idStrBufSize } = readString(buf, offset);
+      offset += idStrBufSize;
 
-      const { value: versionStr, size: versionStrLength } = readString(buf, offset);
-      offset += versionStrLength;
+      const { value: versionStr, size: versionStrBufSize } = readString(buf, offset);
+      offset += versionStrBufSize;
 
       knownPacks.push({
         namespace: namespaceStr,

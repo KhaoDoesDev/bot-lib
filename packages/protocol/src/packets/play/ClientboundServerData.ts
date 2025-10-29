@@ -6,10 +6,7 @@ export class ClientboundServerData extends Packet {
   static override id = 0x4f;
   static override state = States.PLAY;
 
-  constructor(
-    public motd: string,
-    public icon?: Buffer
-  ) {
+  constructor(public motd: string, public icon?: Buffer) {
     super();
   }
 
@@ -44,8 +41,11 @@ export class ClientboundServerData extends Packet {
 
     if (buf[offset] === 0x00) offset++;
 
-    const { value: iconLength, size } = readVarInt(buf, offset);
-    offset += size;
+    const { value: iconLength, size: iconLengthBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += iconLengthBufSize;
 
     let icon: Buffer | undefined;
     if (iconLength > 0) {

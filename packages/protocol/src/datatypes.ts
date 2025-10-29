@@ -45,10 +45,7 @@ export function writeString(str: string): Buffer {
   return Buffer.concat([writeVarInt(strBuf.length), strBuf]);
 }
 
-export function readBoolean(
-  buf: Buffer,
-  offset = 0
-): boolean {
+export function readBoolean(buf: Buffer, offset = 0): boolean {
   return buf[offset] !== 0;
 }
 
@@ -121,7 +118,10 @@ export function writeDouble(val: number): Buffer {
   return buf;
 }
 
-export async function readNbt(buffer: Buffer, option?: DecodeOptions): Promise<DecodeResult | null> {
+export async function readNbt(
+  buffer: Buffer,
+  option?: DecodeOptions
+): Promise<DecodeResult | null> {
   let sliceSize = 1;
 
   while (sliceSize <= buffer.length) {

@@ -11,16 +11,10 @@ export class ClientboundEntityEvent extends Packet {
   }
 
   serialize(): Buffer {
-    return Buffer.concat([
-      writeInt(this.entityId),
-      writeByte(this.status),
-    ]);
+    return Buffer.concat([writeInt(this.entityId), writeByte(this.status)]);
   }
 
   static override deserialize(buf: Buffer): ClientboundEntityEvent {
-    return new ClientboundEntityEvent(
-      readInt(buf, 0),
-      readByte(buf, 4)
-    );
+    return new ClientboundEntityEvent(readInt(buf, 0), readByte(buf, 4));
   }
 }

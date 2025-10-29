@@ -10,7 +10,7 @@ import {
 } from "../../datatypes";
 
 export class ClientboundMoveEntityPos extends Packet {
-  static override id = 0x2E;
+  static override id = 0x2e;
   static override state = States.PLAY;
 
   constructor(
@@ -36,8 +36,8 @@ export class ClientboundMoveEntityPos extends Packet {
   static override deserialize(buf: Buffer): ClientboundMoveEntityPos {
     let offset = 0;
 
-    let { value: entityId, size: entityIdSize } = readVarInt(buf, offset);
-    offset += entityIdSize;
+    let { value: entityId, size: entityIdBufSize } = readVarInt(buf, offset);
+    offset += entityIdBufSize;
     let deltaX = readShort(buf, offset);
     offset += 2;
     let deltaY = readShort(buf, offset);

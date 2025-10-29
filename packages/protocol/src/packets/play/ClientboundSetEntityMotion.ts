@@ -15,7 +15,7 @@ export class ClientboundSetEntityMotion extends Packet {
     public entityId: number,
     public velocityX: number,
     public velocityY: number,
-    public velocityZ: number,
+    public velocityZ: number
   ) {
     super();
   }
@@ -39,12 +39,13 @@ export class ClientboundSetEntityMotion extends Packet {
     let velocityY = readShort(buf, offset);
     offset += 2;
     let velocityZ = readShort(buf, offset);
+    offset += 2;
 
     return new ClientboundSetEntityMotion(
       entityId,
       velocityX,
       velocityY,
-      velocityZ,
+      velocityZ
     );
   }
 }

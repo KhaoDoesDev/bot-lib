@@ -25,15 +25,15 @@ export class ClientboundUpdateEnabledFeatures extends Packet {
   static override deserialize(buf: Buffer): ClientboundUpdateEnabledFeatures {
     let offset = 0;
 
-    const { value: length, size: lengthVarInt } = readVarInt(buf, offset);
-    offset += lengthVarInt;
+    const { value: length, size: lengthBufSize } = readVarInt(buf, offset);
+    offset += lengthBufSize;
 
     const featureFlags: string[] = [];
 
     for (let i = 0; i < length; i++) {
-      const { value: str, size: strLength } = readString(buf, offset);
-      featureFlags.push(str);
-      offset += strLength;
+      const { value: featureFlag, size: featureFlagBufSize } = readString(buf, offset);
+      featureFlags.push(featureFlag);
+      offset += featureFlagBufSize;
     }
 
     return new ClientboundUpdateEnabledFeatures(featureFlags);

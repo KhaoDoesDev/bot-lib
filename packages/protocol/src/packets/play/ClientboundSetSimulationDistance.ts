@@ -15,8 +15,6 @@ export class ClientboundSetSimulationDistance extends Packet {
   }
 
   static override deserialize(buf: Buffer): ClientboundSetSimulationDistance {
-    return new ClientboundSetSimulationDistance(
-      readVarInt(buf, 0).value
-    );
+    return new ClientboundSetSimulationDistance(readVarInt(buf, 0).value);
   }
 }

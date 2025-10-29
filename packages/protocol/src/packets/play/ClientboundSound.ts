@@ -46,12 +46,10 @@ export class ClientboundSound extends Packet {
   static override deserialize(buf: Buffer): ClientboundSound {
     let offset = 0;
 
-    const { value: event, size: s1 } = readString(buf, offset);
-    offset += s1;
-
-    const { value: category, size: s2 } = readVarInt(buf, offset);
-    offset += s2;
-
+    const { value: event, size: eventBufSize } = readString(buf, offset);
+    offset += eventBufSize;
+    const { value: category, size: categoryBufSize } = readVarInt(buf, offset);
+    offset += categoryBufSize;
     const x = readInt(buf, offset);
     offset += 4;
     const y = readInt(buf, offset);
@@ -64,6 +62,7 @@ export class ClientboundSound extends Packet {
     offset += 4;
     const seed = readLong(buf, offset);
     offset += 8;
+
     return new ClientboundSound(event, category, x, y, z, volume, pitch, seed);
   }
 }

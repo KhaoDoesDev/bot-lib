@@ -1,7 +1,4 @@
-import {
-  readVarInt,
-  writeVarInt,
-} from "../../datatypes";
+import { readVarInt, writeVarInt } from "../../datatypes";
 import { States } from "../../types";
 import { Packet } from "../Packet";
 

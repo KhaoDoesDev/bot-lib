@@ -1,13 +1,6 @@
 import { States } from "../../types";
 import { Packet } from "../Packet";
-import {
-  readByte,
-  readFloat,
-  readVarInt,
-  writeByte,
-  writeFloat,
-  writeVarInt,
-} from "../../datatypes";
+import { readByte, readVarInt, writeByte, writeVarInt } from "../../datatypes";
 
 export class ClientboundRotateHead extends Packet {
   static override id = 0x4c;
@@ -18,17 +11,14 @@ export class ClientboundRotateHead extends Packet {
   }
 
   serialize(): Buffer {
-    return Buffer.concat([
-      writeVarInt(this.entityId),
-      writeByte(this.headYaw),
-    ]);
+    return Buffer.concat([writeVarInt(this.entityId), writeByte(this.headYaw)]);
   }
 
   static override deserialize(buf: Buffer): ClientboundRotateHead {
     let offset = 0;
 
-    let { value: entityId, size: entityIdSize } = readVarInt(buf, offset);
-    offset += entityIdSize;
+    let { value: entityId, size: entityIdBufSize } = readVarInt(buf, offset);
+    offset += entityIdBufSize;
     let headYaw = readByte(buf, offset);
     return new ClientboundRotateHead(entityId, headYaw);
   }

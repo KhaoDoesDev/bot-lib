@@ -4,7 +4,7 @@ export type Events = {
   packet: (packet: Packet) => void;
   unhandledPacket: (id: number, payload: Buffer) => void;
   packetError: (id: number, error: any) => void;
-}
+};
 
 export enum Intentions {
   STATUS = 1,

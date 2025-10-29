@@ -46,31 +46,37 @@ export class ClientboundLoginFinished extends Packet {
   static override deserialize(buf: Buffer): ClientboundLoginFinished {
     let offset = 0;
 
-    const { value: uuid, size: s1 } = readUUID(buf, offset);
-    offset += s1;
+    const { value: uuid, size: uuidBufSize } = readUUID(buf, offset);
+    offset += uuidBufSize;
 
-    const { value: username, size: s2 } = readString(buf, offset);
-    offset += s2;
+    const { value: username, size: usernameBufSize } = readString(buf, offset);
+    offset += usernameBufSize;
 
-    const { value: propCount, size: s3 } = readVarInt(buf, offset);
-    offset += s3;
+    const { value: propCount, size: propCountBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += propCountBufSize;
 
     const properties = new Map<string, { value: string; signature?: string }>();
 
     for (let i = 0; i < propCount; i++) {
-      const { value: name, size: s4 } = readString(buf, offset);
-      offset += s4;
+      const { value: name, size: nameBufSize } = readString(buf, offset);
+      offset += nameBufSize;
 
-      const { value, size: s5 } = readString(buf, offset);
-      offset += s5;
+      const { value, size: valueBufSize } = readString(buf, offset);
+      offset += valueBufSize;
 
       const hasSignature = buf.readUInt8(offset++) === 1;
       let signature: string | undefined;
 
       if (hasSignature) {
-        const { value: sig, size: s6 } = readString(buf, offset);
-        offset += s6;
-        signature = sig;
+        const { value: signatureStr, size: signatureStrBufSize } = readString(
+          buf,
+          offset
+        );
+        offset += signatureStrBufSize;
+        signature = signatureStr;
       }
 
       properties.set(name, { value, signature });

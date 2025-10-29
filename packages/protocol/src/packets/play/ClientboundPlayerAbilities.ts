@@ -1,11 +1,6 @@
 import { Packet } from "../Packet";
 import { States } from "../../types";
-import {
-  readByte,
-  readFloat,
-  writeByte,
-  writeFloat,
-} from "../../datatypes";
+import { readByte, readFloat, writeByte, writeFloat } from "../../datatypes";
 
 export class ClientboundPlayerAbilities extends Packet {
   static override id = 0x39;
@@ -45,9 +40,12 @@ export class ClientboundPlayerAbilities extends Packet {
   static override deserialize(buf: Buffer): ClientboundPlayerAbilities {
     let offset = 0;
 
-    const flags = readByte(buf, offset++);
-    const flyingSpeed = readFloat(buf, offset++);
-    const fieldOfViewModifier = readFloat(buf, offset++);
+    const flags = readByte(buf, offset);
+    offset += 1;
+    const flyingSpeed = readFloat(buf, offset);
+    offset += 4;
+    const fieldOfViewModifier = readFloat(buf, offset);
+    offset += 4;
 
     return new ClientboundPlayerAbilities(
       ClientboundPlayerAbilities.bitfieldToFlags(flags),

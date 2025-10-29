@@ -23,9 +23,9 @@ export class ClientboundCustomPayload extends Packet {
   static override deserialize(buf: Buffer): ClientboundCustomPayload {
     let offset = 0;
 
-    const { value: identifier, size: identifierSize } = readString(buf, offset); 
-    offset += identifierSize;
+    const { value: identifier, size: identifierBufSize } = readString(buf, offset); 
+    offset += identifierBufSize;
 
-    return new ClientboundCustomPayload(identifier, buf.slice(offset));
+    return new ClientboundCustomPayload(identifier, buf.subarray(offset));
   }
 }

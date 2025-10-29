@@ -65,22 +65,24 @@ export class ServerboundClientInformation extends Packet {
   static override deserialize(buf: Buffer): ServerboundClientInformation {
     let offset = 0;
 
-    const { value: locale, size: s1 } = readString(buf, offset);
-    offset += s1;
-
-    const viewDistance = readByte(buf, offset++);
-    const { value: chatMode, size: s3 } = readVarInt(buf, offset);
-    offset += s3;
-
-    const chatColors = readBoolean(buf, offset++); 
-    const displayedSkinParts = readByte(buf, offset++);
-
-    const { value: mainHand, size: s6 } = readVarInt(buf, offset);
-    offset += s6;
-
-    const enableTextFiltering = readBoolean(buf, offset++);
-    const allowServerListing = readBoolean(buf, offset++);
-    const { value: particleStatus } = readVarInt(buf, offset);
+    const { value: locale, size: localeBufSize } = readString(buf, offset);
+    offset += localeBufSize;
+    const viewDistance = readByte(buf, offset);
+    offset += 1;
+    const { value: chatMode, size: chatModeBufSize } = readVarInt(buf, offset);
+    offset += chatModeBufSize;
+    const chatColors = readBoolean(buf, offset);
+    offset += 1;
+    const displayedSkinParts = readByte(buf, offset);
+    offset += 1;
+    const { value: mainHand, size: mainHandBufSize } = readVarInt(buf, offset);
+    offset += mainHandBufSize;
+    const enableTextFiltering = readBoolean(buf, offset);
+    offset += 1;
+    const allowServerListing = readBoolean(buf, offset);
+    offset += 1;
+    const { value: particleStatus, size: particleStatusBufSize } = readVarInt(buf, offset);
+    offset += particleStatusBufSize;
 
     return new ServerboundClientInformation(
       locale,

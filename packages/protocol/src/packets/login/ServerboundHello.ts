@@ -16,10 +16,10 @@ export class ServerboundHello extends Packet {
 
   static override deserialize(buf: Buffer): ServerboundHello {
     let offset = 0;
-    const { value: username, size: s1 } = readString(buf, offset);
-    offset += s1;
-    const { value: uuid, size: s2 } = readUUID(buf, offset);
-    offset += s2;
+    const { value: username, size: usernameBufSize } = readString(buf, offset);
+    offset += usernameBufSize;
+    const { value: uuid, size: uuidBufSize } = readUUID(buf, offset);
+    offset += uuidBufSize;
 
     return new ServerboundHello(username, uuid);
   }

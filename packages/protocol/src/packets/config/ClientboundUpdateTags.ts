@@ -43,35 +43,35 @@ export class ClientboundUpdateTags extends Packet {
   static override deserialize(buf: Buffer): ClientboundUpdateTags {
     let offset = 0;
 
-    const { value: groupsCount, size: groupsCountLength } = readVarInt(
+    const { value: groupsCount, size: groupsCountBufSize } = readVarInt(
       buf,
       offset
     );
-    offset += groupsCountLength;
+    offset += groupsCountBufSize;
 
     const groups: TagGroup[] = Array.from({ length: groupsCount }, () => {
-      const { value: registry, size: registrySize } = readString(buf, offset);
-      offset += registrySize;
+      const { value: registry, size: registryBufSize } = readString(buf, offset);
+      offset += registryBufSize;
 
-      const { value: tagCount, size: tagCountVarIntLength } = readVarInt(
+      const { value: tagCount, size: tagCountBufSize } = readVarInt(
         buf,
         offset
       );
-      offset += tagCountVarIntLength;
+      offset += tagCountBufSize;
 
       const tags: Tag[] = Array.from({ length: tagCount }, () => {
-        const { value: tagName, size: tagNameSize } = readString(buf, offset);
-        offset += tagNameSize;
+        const { value: tagName, size: tagNameBufSize } = readString(buf, offset);
+        offset += tagNameBufSize;
 
-        const { value: valueCount, size: valueCountVarIntLength } = readVarInt(
+        const { value: valueCount, size: valueCountBufSize } = readVarInt(
           buf,
           offset
         );
-        offset += valueCountVarIntLength;
+        offset += valueCountBufSize;
 
         const values: number[] = Array.from({ length: valueCount }, () => {
-          const { value: value, size: valueSize } = readVarInt(buf, offset);
-          offset += valueSize;
+          const { value: value, size: valueBufSize } = readVarInt(buf, offset);
+          offset += valueBufSize;
           return value;
         });
 

@@ -1,8 +1,5 @@
 import { Packet } from "../Packet";
-import {
-  readString,
-  writeString,
-} from "../../datatypes";
+import { readString, writeString } from "../../datatypes";
 import { States } from "../../types";
 
 export class ClientboundLoginDisconnect extends Packet {

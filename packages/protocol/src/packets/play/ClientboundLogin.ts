@@ -51,7 +51,7 @@ export class ClientboundLogin extends Packet {
       writeInt(this.entityId),
       writeBoolean(this.isHardcore),
       writeInt(this.diamensionNames.length),
-      ...this.diamensionNames.map((name) => Buffer.from(name)),
+      ...this.diamensionNames.map((name) => writeString(name)),
       writeVarInt(this.maxPlayers),
       writeVarInt(this.viewDistance),
       writeVarInt(this.simulationDistance),
@@ -86,9 +86,11 @@ export class ClientboundLogin extends Packet {
 
     const entityId = readInt(buf, offset);
     offset += 4;
-    const isHardcore = readBoolean(buf, offset++);
-    const diamensionNamesCount = readInt(buf, offset);
-    offset += 4;
+    const isHardcore = readBoolean(buf, offset);
+    offset += 1;
+    const { value: diamensionNamesCount, size: diamensionNamesCountBufSize } =
+      readVarInt(buf, offset);
+    offset += diamensionNamesCountBufSize;
 
     const diamensionNames: string[] = Array.from(
       { length: diamensionNamesCount },
@@ -99,36 +101,57 @@ export class ClientboundLogin extends Packet {
       }
     );
 
-    const { value: maxPlayers, size: s4 } = readVarInt(buf, offset);
-    offset += s4;
-    const { value: viewDistance, size: s5 } = readVarInt(buf, offset);
-    offset += s5;
-    const { value: simulationDistance, size: s6 } = readVarInt(buf, offset);
-    offset += s6;
-    const reducedDebugInfo = readBoolean(buf, offset++);
-    const enableRespawnScreen = readBoolean(buf, offset++);
-    const doLimitedCrafting = readBoolean(buf, offset++);
-    const { value: dimensionType, size: s7 } = readVarInt(buf, offset);
-    offset += s7;
-    const { value: dimensionName, size: s8 } = readString(buf, offset);
-    offset += s8;
+    const { value: maxPlayers, size: maxPlayersBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += maxPlayersBufSize;
+    const { value: viewDistance, size: viewDistanceBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += viewDistanceBufSize;
+    const { value: simulationDistance, size: simulationDistanceBufSize } =
+      readVarInt(buf, offset);
+    offset += simulationDistanceBufSize;
+    const reducedDebugInfo = readBoolean(buf, offset);
+    offset += 1;
+    const enableRespawnScreen = readBoolean(buf, offset);
+    offset += 1;
+    const doLimitedCrafting = readBoolean(buf, offset);
+    offset += 1;
+    const { value: dimensionType, size: dimensionTypeBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += dimensionTypeBufSize;
+    const { value: dimensionName, size: dimensionNameBufSize } = readString(
+      buf,
+      offset
+    );
+    offset += dimensionNameBufSize;
     const hashedSeed = readLong(buf, offset);
     offset += 8;
-    const gameMode = readByte(buf, offset++);
-    const previousGameMode = readByte(buf, offset++);
-    const isDebug = readBoolean(buf, offset++);
-    const isFlat = readBoolean(buf, offset++);
-    const hasDeathLocation = readBoolean(buf, offset++);
+    const gameMode = readByte(buf, offset);
+    offset += 1;
+    const previousGameMode = readByte(buf, offset);
+    offset += 1;
+    const isDebug = readBoolean(buf, offset);
+    offset += 1;
+    const isFlat = readBoolean(buf, offset);
+    offset += 1;
+    const hasDeathLocation = readBoolean(buf, offset);
+    offset += 1;
 
     let deathDimensionName: string | null = null;
     let deathLocation: number[] | null = null;
 
     if (hasDeathLocation) {
-      const { value: deathDimensionNameStr, size: s12 } = readString(
-        buf,
-        offset
-      );
-      offset += s12;
+      const {
+        value: deathDimensionNameStr,
+        size: deathDimensionNameStrBufSize,
+      } = readString(buf, offset);
+      offset += deathDimensionNameStrBufSize;
       deathDimensionName = deathDimensionNameStr;
       const deathLocationCount = readInt(buf, offset);
       offset += 4;
@@ -139,11 +162,15 @@ export class ClientboundLogin extends Packet {
       });
     }
 
-    const { value: portalCooldown, size: s14 } = readVarInt(buf, offset);
-    offset += s14;
-    const { value: seaLevel, size: s15 } = readVarInt(buf, offset);
-    offset += s15;
-    const enforcesSecureChat = readBoolean(buf, offset++);
+    const { value: portalCooldown, size: portalCooldownBufSize } = readVarInt(
+      buf,
+      offset
+    );
+    offset += portalCooldownBufSize;
+    const { value: seaLevel, size: seaLevelBufSize } = readVarInt(buf, offset);
+    offset += seaLevelBufSize;
+    const enforcesSecureChat = readBoolean(buf, offset);
+    offset += 1;
 
     return new ClientboundLogin(
       entityId,

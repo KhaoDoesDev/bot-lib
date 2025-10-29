@@ -1,4 +1,9 @@
-import { readBoolean, readByte, writeBoolean, writeByte } from "../../datatypes";
+import {
+  readBoolean,
+  readByte,
+  writeBoolean,
+  writeByte,
+} from "../../datatypes";
 import { Difficulties, States } from "../../types";
 import { Packet } from "../Packet";
 
@@ -6,10 +11,7 @@ export class ClientboundChangeDifficulty extends Packet {
   static override id = 0x0a;
   static override state = States.PLAY;
 
-  constructor(
-    public difficulty: Difficulties,
-    public locked: boolean
-  ) {
+  constructor(public difficulty: Difficulties, public locked: boolean) {
     super();
   }
 

@@ -32,8 +32,8 @@ export class ClientboundSetSpawn extends Packet {
 
     const health = readFloat(buf, offset);
     offset += 4;
-    const { value: food, size: s1 } = readVarInt(buf, offset);
-    offset += s1;
+    const { value: food, size: foodBufSize } = readVarInt(buf, offset);
+    offset += foodBufSize;
     const saturation = readFloat(buf, offset);
     offset += 4;
     return new ClientboundSetSpawn(health, food, saturation);

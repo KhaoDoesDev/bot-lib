@@ -15,8 +15,6 @@ export class ClientboundSetChunkCacheRadius extends Packet {
   }
 
   static override deserialize(buf: Buffer): ClientboundSetChunkCacheRadius {
-    return new ClientboundSetChunkCacheRadius(
-      readVarInt(buf, 0).value
-    );
+    return new ClientboundSetChunkCacheRadius(readVarInt(buf, 0).value);
   }
 }
