@@ -66,3 +66,9 @@ export function bitfieldToTeleportFlags(bitfield: number): TeleportFlagsType {
   }
   return result;
 }
+
+export type Position = {
+  x: number;
+  y: number;
+  z: number;
+};

@@ -3,10 +3,8 @@ import { Packet } from "../Packet";
 import {
   readBoolean,
   readLong,
-  readVarInt,
   writeBoolean,
   writeLong,
-  writeVarInt,
 } from "../../datatypes";
 
 export class ClientboundSetTime extends Packet {
@@ -15,7 +13,7 @@ export class ClientboundSetTime extends Packet {
 
   constructor(
     public worldAge: bigint,
-    public timeOfDay: number,
+    public timeOfDay: bigint,
     public timeOfDayIncreasing: boolean
   ) {
     super();
@@ -24,7 +22,7 @@ export class ClientboundSetTime extends Packet {
   serialize(): Buffer {
     return Buffer.concat([
       writeLong(this.worldAge),
-      writeVarInt(this.timeOfDay),
+      writeLong(this.timeOfDay),
       writeBoolean(this.timeOfDayIncreasing),
     ]);
   }
@@ -33,11 +31,8 @@ export class ClientboundSetTime extends Packet {
     let offset = 0;
     const worldAge = readLong(buf, offset);
     offset += 8;
-    const { value: timeOfDay, size: timeOfDayBufSize } = readVarInt(
-      buf,
-      offset
-    );
-    offset += timeOfDayBufSize;
+    const timeOfDay = readLong(buf, offset);
+    offset += 8;
     const timeOfDayIncreasing = readBoolean(buf, offset);
 
     return new ClientboundSetTime(worldAge, timeOfDay, timeOfDayIncreasing);

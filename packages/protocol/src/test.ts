@@ -79,8 +79,8 @@ client.on("packet", async (packet) => {
 });
 
 client.on("unhandledPacket", (id, payload) => {
-  // console.log(`Unhandled packet ID: 0x${id.toString(16)}`);
-  // console.log(payload);
+  console.log(`Unhandled packet ID: 0x${id.toString(16)}`);
+  console.log(payload);
 });
 
 client.on("packetError", (id, err) => {

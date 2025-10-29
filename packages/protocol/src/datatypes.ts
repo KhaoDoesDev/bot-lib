@@ -1,6 +1,7 @@
 import { Buffer } from "buffer";
 import { decode, type DecodeOptions, type DecodeResult } from "nbt-ts";
 import { NBTData, read } from "nbtify";
+import type { Position } from "./types";
 
 export function readVarInt(
   buf: Buffer,
@@ -28,6 +29,34 @@ export function writeVarInt(value: number): Buffer {
     if (value !== 0) temp |= 0x80;
     buf.push(temp);
   } while (value !== 0);
+  return Buffer.from(buf);
+}
+
+export function readVarLong(buf: Buffer, offset = 0): { value: bigint; size: number } {
+  let num = 0n;
+  let shift = 0n;
+  let size = 0;
+
+  while (true) {
+    const byte = buf[offset + size]!;
+    num |= (BigInt(byte) & 0x7fn) << shift;
+    size++;
+    if ((byte & 0x80) === 0) break;
+    shift += 7n;
+    if (shift >= 64n) throw new Error("VarLong too big");
+  }
+
+  return { value: num, size };
+}
+
+export function writeVarLong(value: bigint): Buffer {
+  const buf: number[] = [];
+  do {
+    let temp = Number(value & 0x7fn);
+    value >>= 7n;
+    if (value !== 0n) temp |= 0x80;
+    buf.push(temp);
+  } while (value !== 0n);
   return Buffer.from(buf);
 }
 
@@ -137,4 +166,33 @@ export async function readNbt(
   }
 
   return null;
+}
+
+export function writePosition(x: number, y: number, z: number): Buffer {
+  let xb = BigInt(x & 0x3FFFFFF);
+  let yb = BigInt(y & 0xFFF);
+  let zb = BigInt(z & 0x3FFFFFF);
+
+  const value = (xb << 38n) | (zb << 12n) | yb;
+
+  const buf = Buffer.alloc(8);
+  buf.writeBigInt64BE(value);
+  return buf;
+}
+
+export function readPosition(
+  buf: Buffer,
+  offset = 0
+): Position {
+  const value = buf.readBigInt64BE(offset);
+
+  let x = Number(value >> 38n);
+  let y = Number((value << 52n) >> 52n);
+  let z = Number((value << 26n) >> 38n);
+
+  if (x >= 1 << 25) x -= 1 << 26;
+  if (y >= 1 << 11) y -= 1 << 12;
+  if (z >= 1 << 25) z -= 1 << 26;
+
+  return { x, y, z };
 }

@@ -21,3 +21,8 @@ export * from "./ClientboundMoveEntityPos";
 export * from "./ClientboundSetEntityMotion";
 export * from "./ClientboundEntityPositionSync";
 export * from "./ClientboundSystemChat";
+export * from "./ClientboundInitializeBorder";
+export * from "./ClientboundSetDefaultSpawnPosition";
+export * from "./ClientboundGameEvent";
+export * from "./ClientboundTickingState";
+export * from "./ClientboundTickingStep";
