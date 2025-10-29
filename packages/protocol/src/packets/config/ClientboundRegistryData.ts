@@ -67,7 +67,6 @@ export class ClientboundRegistryData extends Packet {
 
     
     const result = new ClientboundRegistryData(registryId, entries);
-    console.log(result);
     return result;
   }
 }
