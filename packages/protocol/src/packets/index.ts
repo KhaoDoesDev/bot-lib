@@ -1,7 +1,57 @@
-import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundRegistryData, ClientboundSelectKnownPacks, ClientboundUpdateEnabledFeatures, ClientboundUpdateTags, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundSelectKnownPacks } from "./config";
+import {
+  ClientboundCustomPayload,
+  ClientboundFinishConfiguration,
+  ClientboundRegistryData,
+  ClientboundSelectKnownPacks,
+  ClientboundUpdateEnabledFeatures,
+  ClientboundUpdateTags,
+  ServerboundClientInformation,
+  ServerboundFinishConfiguration,
+  ServerboundSelectKnownPacks,
+} from "./config";
 import { ServerboundIntention } from "./handshake";
-import { ClientboundLoginCompression, ClientboundLoginDisconnect, ClientboundLoginFinished, ServerboundHello, ServerboundLoginAcknowledged } from "./login";
-import { ClientboundChangeDifficulty, ClientboundEntityEvent, ClientboundEntityPositionSync, ClientboundGameEvent, ClientboundInitializeBorder, ClientboundKeepAlive, ClientboundLogin, ClientboundMoveEntityPos, ClientboundMoveEntityPosRot, ClientboundPlayerAbilities, ClientboundPlayerPosition, ClientboundRecipeBookSettings, ClientboundRotateHead, ClientboundServerData, ClientboundSetChunkCacheRadius, ClientboundSetDefaultSpawnPosition, ClientboundSetEntityMotion, ClientboundSetExperience, ClientboundSetHeldItem, ClientboundSetSimulationDistance, ClientboundSetSpawn, ClientboundSound, ClientboundSystemChat, ClientboundTickingState, ClientboundTickingStep, ClientboundUpdateRecipes, ServerboundKeepAlive } from "./play";
+import {
+  ClientboundLoginCompression,
+  ClientboundLoginDisconnect,
+  ClientboundLoginFinished,
+  ServerboundHello,
+  ServerboundLoginAcknowledged,
+} from "./login";
+import {
+  ClientboundAddEntity,
+  ClientboundBundleDelimiter,
+  ClientboundChangeDifficulty,
+  ClientboundEntityEvent,
+  ClientboundEntityPositionSync,
+  ClientboundGameEvent,
+  ClientboundInitializeBorder,
+  ClientboundKeepAlive,
+  ClientboundLogin,
+  ClientboundMoveEntityPos,
+  ClientboundMoveEntityPosRot,
+  ClientboundMoveEntityRot,
+  ClientboundPlayerAbilities,
+  ClientboundPlayerPosition,
+  ClientboundRecipeBookSettings,
+  ClientboundRotateHead,
+  ClientboundServerData,
+  ClientboundSetChunkCacheCenter,
+  ClientboundSetChunkCacheRadius,
+  ClientboundSetDefaultSpawnPosition,
+  ClientboundSetEntityMotion,
+  ClientboundSetExperience,
+  ClientboundSetHeldItem,
+  ClientboundSetSimulationDistance,
+  ClientboundSetSpawn,
+  ClientboundSetTime,
+  ClientboundSound,
+  ClientboundSystemChat,
+  ClientboundTickingState,
+  ClientboundTickingStep,
+  ClientboundUpdateAttributes,
+  ClientboundUpdateRecipes,
+  ServerboundKeepAlive,
+} from "./play";
 
 export const serverboundPackets = [
   ServerboundIntention,
@@ -10,7 +60,7 @@ export const serverboundPackets = [
   ServerboundClientInformation,
   ServerboundSelectKnownPacks,
   ServerboundFinishConfiguration,
-  ServerboundKeepAlive
+  ServerboundKeepAlive,
 ];
 
 export const clientboundPackets = [
@@ -48,7 +98,13 @@ export const clientboundPackets = [
   ClientboundSetDefaultSpawnPosition,
   ClientboundGameEvent,
   ClientboundTickingState,
-  ClientboundTickingStep
+  ClientboundTickingStep,
+  ClientboundMoveEntityRot,
+  ClientboundAddEntity,
+  ClientboundBundleDelimiter,
+  ClientboundUpdateAttributes,
+  ClientboundSetChunkCacheCenter,
+  ClientboundSetTime
 ];
 
 export const packets = [...serverboundPackets, ...clientboundPackets];

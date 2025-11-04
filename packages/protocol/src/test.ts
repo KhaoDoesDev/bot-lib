@@ -1,9 +1,23 @@
 import { Client } from "./client";
-import { ClientboundCustomPayload, ClientboundFinishConfiguration, ClientboundKeepAlive, ClientboundLoginCompression, ClientboundLoginFinished, ClientboundRotateHead, ClientboundSelectKnownPacks, ClientboundServerData, ClientboundSystemChat, ClientboundUpdateEnabledFeatures, ServerboundClientInformation, ServerboundFinishConfiguration, ServerboundHello, ServerboundIntention, ServerboundKeepAlive, ServerboundLoginAcknowledged, ServerboundSelectKnownPacks } from "./packets";
+import {
+  ClientboundFinishConfiguration,
+  ClientboundKeepAlive,
+  ClientboundLoginCompression,
+  ClientboundLoginFinished,
+  ClientboundSelectKnownPacks,
+  ClientboundServerData,
+  ServerboundClientInformation,
+  ServerboundFinishConfiguration,
+  ServerboundHello,
+  ServerboundIntention,
+  ServerboundKeepAlive,
+  ServerboundLoginAcknowledged,
+  ServerboundSelectKnownPacks,
+} from "./packets";
 import { States } from "./types";
 
 const HOST = "localhost";
-const PORT = 25555;
+const PORT = 25565;
 
 const client = new Client(HOST, PORT);
 
@@ -12,12 +26,7 @@ const client = new Client(HOST, PORT);
 client.socket.on("connect", async () => {
   console.log(`Connected to ${HOST}:${PORT}`);
 
-  const handshake = new ServerboundIntention(
-    772,
-    HOST,
-    PORT,
-    2
-  );
+  const handshake = new ServerboundIntention(772, HOST, PORT, 2);
 
   await client.writePacket(handshake);
   console.log("Handshake sent!");
@@ -33,7 +42,6 @@ client.socket.on("connect", async () => {
 });
 
 client.on("packet", async (packet) => {
-  
   if (packet instanceof ClientboundServerData) {
     console.log(packet);
   }
@@ -65,7 +73,7 @@ client.on("packet", async (packet) => {
       )
     );
   } else if (packet instanceof ClientboundLoginCompression) {
-    client.compressionThreshold = packet.threshold; 
+    client.compressionThreshold = packet.threshold;
     console.log(`Compression threshold set to ${packet.threshold}`);
   } else if (packet instanceof ClientboundSelectKnownPacks) {
     client.writePacket(new ServerboundSelectKnownPacks([]));
@@ -79,6 +87,14 @@ client.on("packet", async (packet) => {
 });
 
 client.on("unhandledPacket", (id, payload) => {
+  if ([
+    0x27, // waiting on world 
+    0x3f, // not high priority
+    0x43, // waiting on inventory 
+    0x12, // waiting on inventory 
+    0x14, // waiting on inventory 
+    0x5f  // waiting on inventory 
+  ].includes(id)) return; // ignore for later
   console.log(`Unhandled packet ID: 0x${id.toString(16)}`);
   console.log(payload);
 });

@@ -45,6 +45,7 @@ export class ClientboundMoveEntityPosRot extends Packet {
     let deltaZ = readShort(buf, offset);
     offset += 2;
     let onGround = readBoolean(buf, offset);
+    offset += 1;
 
     return new ClientboundMoveEntityPosRot(
       entityId,

@@ -2,22 +2,21 @@ import { States } from "../../types";
 import { Packet } from "../Packet";
 import {
   readBoolean,
-  readShort,
+  readByte,
   readVarInt,
   writeBoolean,
-  writeShort,
+  writeByte,
   writeVarInt,
 } from "../../datatypes";
 
-export class ClientboundMoveEntityPos extends Packet {
-  static override id = 0x2e;
+export class ClientboundMoveEntityRot extends Packet {
+  static override id = 0x31;
   static override state = States.PLAY;
 
   constructor(
     public entityId: number,
-    public deltaX: number,
-    public deltaY: number,
-    public deltaZ: number,
+    public pitch: number,
+    public yaw: number,
     public onGround: boolean
   ) {
     super();
@@ -26,32 +25,28 @@ export class ClientboundMoveEntityPos extends Packet {
   serialize(): Buffer {
     return Buffer.concat([
       writeVarInt(this.entityId),
-      writeShort(this.deltaX),
-      writeShort(this.deltaY),
-      writeShort(this.deltaZ),
+      writeByte(this.pitch),
+      writeByte(this.yaw),
       writeBoolean(this.onGround),
     ]);
   }
 
-  static override deserialize(buf: Buffer): ClientboundMoveEntityPos {
+  static override deserialize(buf: Buffer): ClientboundMoveEntityRot {
     let offset = 0;
 
     let { value: entityId, size: entityIdBufSize } = readVarInt(buf, offset);
     offset += entityIdBufSize;
-    let deltaX = readShort(buf, offset);
-    offset += 2;
-    let deltaY = readShort(buf, offset);
-    offset += 2;
-    let deltaZ = readShort(buf, offset);
-    offset += 2;
+    let pitch = readByte(buf, offset);
+    offset += 1;
+    let yaw = readByte(buf, offset);
+    offset += 1;
     let onGround = readBoolean(buf, offset);
     offset += 1;
 
-    return new ClientboundMoveEntityPos(
+    return new ClientboundMoveEntityRot(
       entityId,
-      deltaX,
-      deltaY,
-      deltaZ,
+      pitch,
+      yaw,
       onGround
     );
   }
