@@ -28,6 +28,10 @@ export class Client extends EventEmitter {
     this.socket = new Socket();
     this.socket.connect(port, host);
     this.socket.on("data", (data) => this.handlePacket(data));
+    this.socket.on("connect", () => this.emit("connect"));
+    this.socket.on("end", () => this.emit("end"));
+    this.socket.on("error", (err) => this.emit("error", err));
+    this.socket.on("close", () => this.emit("close"));
   }
 
   async writePacket(packet: Packet) {

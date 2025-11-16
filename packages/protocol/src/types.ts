@@ -1,6 +1,10 @@
 import type { Packet } from "./packets/Packet";
 
 export type Events = {
+  connect: () => void;
+  end: () => void;
+  error: (error: Error) => void;
+  close: () => void;
   packet: (packet: Packet) => void;
   unhandledPacket: (id: number, payload: Buffer) => void;
   packetError: (id: number, error: any) => void;
